@@ -62,7 +62,7 @@ homebrew_casks:
   repository:
     owner: IT-Academic-Research-Services
     name: homebrew-tap
-    token: "{{.Env.HOMEBREW_TAP_GITHUB_TOKEN}}"
+    token: "{{.Env.PUBLISH_GITHUB_TOKEN}}"
   homepage: "https://github.com/IT-Academic-Research-Services/seqtoid-cli"
   completions:
     bash: "bash_completion"
@@ -76,6 +76,19 @@ homebrew_casks:
         if OS.mac? && File.exist?("#{staged_path}/seqtoid")
           system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/seqtoid"]
         end
+
+# Windows distribution via Scoop. Publishes a manifest to the public scoop-seqtoid bucket from the
+# Windows archives, so users can: scoop bucket add seqtoid https://github.com/IT-Academic-Research-Services/scoop-seqtoid
+# then `scoop install seqtoid`.
+scoops:
+- name: seqtoid
+  repository:
+    owner: IT-Academic-Research-Services
+    name: scoop-seqtoid
+    token: "{{.Env.PUBLISH_GITHUB_TOKEN}}"
+  homepage: "https://github.com/IT-Academic-Research-Services/seqtoid-cli"
+  description: "A CLI for uploading samples to SeqToID"
+  license: MIT
 
 nfpms:
   -
