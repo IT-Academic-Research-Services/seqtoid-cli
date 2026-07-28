@@ -13,7 +13,8 @@ The `Build`, `Test`, `Dependencies`, and `Lint` jobs run on every push. The `Pre
 - **Prerelease** — create a GitHub Release with *"Set as a pre-release"* checked. Runs
   `goreleaser release --config .goreleaser.prerelease.yml` (binaries + checksums only, no Homebrew).
 - **Release** — create a normal (non-prerelease) GitHub Release. Runs
-  `goreleaser release --config .goreleaser.yml` (binaries + checksums + `.deb`/`.rpm` + Homebrew cask).
+  `goreleaser release --config .goreleaser.yml` (binaries + checksums + `.deb`/`.rpm` + Homebrew cask
+  + Scoop manifest).
 
 Steps to cut a production release:
 
@@ -37,7 +38,7 @@ CLI these are the **production** SeqToID / Auth0 values:
 | `AUTH0_HOST` | Auth0 domain the CLI talks to (custom domain). | `auth.seqtoid.org` |
 | `AUTH0_AUDIENCE` | Audience requested during the device flow so Auth0 issues a token. Use a valid API identifier for the tenant (e.g. the Management API). | `https://<tenant>.us.auth0.com/api/v2/` |
 | `SEQTOID_BASE_URL` | The SeqToID web API the CLI uploads to. | `https://seqtoid.org` |
-| `HOMEBREW_TAP_GITHUB_TOKEN` | A token with **write** access to the Homebrew tap repo (below). Release job only. | (bot PAT) |
+| `PUBLISH_GITHUB_TOKEN` | A token with **write** access to both public dist repos (`homebrew-tap` + `scoop-seqtoid`). Release job only. | (bot/service PAT) |
 
 `GITHUB_TOKEN` is provided automatically by Actions.
 
@@ -46,21 +47,28 @@ CLI these are the **production** SeqToID / Auth0 values:
 > `auth0_client_id` / `auth0_host` / `auth0_audience` / `seqtoid_base_url` overrides; the baked
 > defaults are only the fallback.
 
-## What must be set up on the UCSF / org-owner side
+## Distribution repos (already set up)
 
-These need `IT-Academic-Research-Services` **org-owner** rights (a repo-member identity cannot do
-them):
+All three repos are public and in the `IT-Academic-Research-Services` org, so Release assets are
+publicly downloadable and the tap/bucket auto-populate:
 
-1. **Homebrew tap repo** — create `IT-Academic-Research-Services/homebrew-tap` (public, so users can
-   `brew install IT-Academic-Research-Services/tap/seqtoid`). The `Release` job pushes the generated
-   cask to it.
-2. **`HOMEBREW_TAP_GITHUB_TOKEN`** — a bot/service token with write access to that tap repo, stored
-   as a secret on this repo.
-3. **Distribution visibility** — this repo is currently **private**, so GitHub Release assets are not
-   publicly downloadable. To distribute to end users, either make `seqtoid-cli` public or host the
-   release assets on a public channel. Decide with UCSF.
-4. **Production Auth0 CLI app** — a Native app (Device Code grant enabled) in the prod tenant;
-   its client id becomes `AUTH0_CLIENT_ID`.
+- `seqtoid-cli` — **public** (this repo). GitHub Release assets are the download backbone.
+- `homebrew-tap` — **public**. The `Release` job pushes `Casks/seqtoid.rb` here.
+- `scoop-seqtoid` — **public**. The `Release` job pushes the Scoop manifest here.
+
+## End-user install
+
+- **macOS:** `brew install IT-Academic-Research-Services/tap/seqtoid`
+- **Windows:** `scoop bucket add seqtoid https://github.com/IT-Academic-Research-Services/scoop-seqtoid` then `scoop install seqtoid`
+- **Linux:** download the tarball (or `.deb`/`.rpm`) from the [Releases page](https://github.com/IT-Academic-Research-Services/seqtoid-cli/releases)
+- **Any OS:** download the binary for your platform from the Releases page
+
+## Still needed before the first real release
+
+1. **`PUBLISH_GITHUB_TOKEN` secret** — a bot/service token with write access to `homebrew-tap` and
+   `scoop-seqtoid`, stored as a repo secret here (the built-in `GITHUB_TOKEN` cannot push to other repos).
+2. **Production Auth0 CLI app** — a Native app (Device Code grant enabled) in the prod tenant;
+   its client id becomes `AUTH0_CLIENT_ID`, alongside the other prod secrets.
 
 ## Not yet done (follow-ups)
 
