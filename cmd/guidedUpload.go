@@ -63,7 +63,7 @@ func seqtoidExec(cmd *cobra.Command, reason string, args ...string) {
 			prettyArgs[i] = s
 		}
 	}
-	msg := fmt.Sprintf("%s, running `seqtoid %s`\n", reason, strings.Join(prettyArgs, " "))
+	msg := fmt.Sprintf("%s, running `seqtoid-cli %s`\n", reason, strings.Join(prettyArgs, " "))
 	_, err := io.WriteString(cmd.OutOrStdout(), msg)
 	if err != nil {
 		log.Fatal(err)

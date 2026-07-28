@@ -20,7 +20,7 @@ var cfgFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "seqtoid",
+	Use:   "seqtoid-cli",
 	Short: "A CLI for uploading samples to SeqToID",
 }
 

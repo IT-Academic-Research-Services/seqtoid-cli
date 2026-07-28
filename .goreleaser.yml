@@ -6,7 +6,7 @@ before:
 
 builds:
 - id: "build-with-completions"
-  binary: seqtoid
+  binary: seqtoid-cli
   env:
     - CGO_ENABLED=0
   goos:
@@ -22,7 +22,7 @@ builds:
     - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid.defaultBaseURL={{.Env.SEQTOID_BASE_URL}}
   hooks:
     post: "scripts/generate_completions.sh {{.Path}}"
-- binary: seqtoid
+- binary: seqtoid-cli
   env:
     - CGO_ENABLED=0
   goos:
@@ -57,7 +57,7 @@ archives:
     - powershell_completion
 
 homebrew_casks:
-- name: seqtoid
+- name: seqtoid-cli
   description: "A CLI for uploading samples to SeqToID"
   repository:
     owner: IT-Academic-Research-Services
@@ -73,15 +73,15 @@ homebrew_casks:
   hooks:
     post:
       install: |
-        if OS.mac? && File.exist?("#{staged_path}/seqtoid")
-          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/seqtoid"]
+        if OS.mac? && File.exist?("#{staged_path}/seqtoid-cli")
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/seqtoid-cli"]
         end
 
 # Windows distribution via Scoop. Publishes a manifest to the public scoop-seqtoid bucket from the
 # Windows archives, so users can: scoop bucket add seqtoid https://github.com/IT-Academic-Research-Services/scoop-seqtoid
-# then `scoop install seqtoid`.
+# then `scoop install seqtoid-cli`.
 scoops:
-- name: seqtoid
+- name: seqtoid-cli
   repository:
     owner: IT-Academic-Research-Services
     name: scoop-seqtoid
@@ -104,9 +104,9 @@ nfpms:
       - rpm
     contents:
       - src: "bash_completion"
-        dst: "/etc/bash_completion.d/seqtoid"
+        dst: "/etc/bash_completion.d/seqtoid-cli"
       - src: "zsh_completion"
-        dst: "/usr/share/zsh/functions/Completion/seqtoid"
+        dst: "/usr/share/zsh/functions/Completion/seqtoid-cli"
 
 checksum:
   name_template: "checksums.txt"
