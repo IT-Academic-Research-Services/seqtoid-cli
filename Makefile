@@ -6,7 +6,7 @@ test: ## run tests, will update go.mod
 .PHONY: test
 
 build: ## build the binary
-	go build -o seqtoid -ldflags="-X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultClientID=${AUTH0_CLIENT_ID} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid.defaultCZIDBaseURL=${SEQTOID_BASE_URL} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg.Version=${VERSION} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultAuth0Host=${AUTH0_HOST}" .
+	go build -o seqtoid -ldflags="-X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultClientID=${AUTH0_CLIENT_ID} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid.defaultBaseURL=${SEQTOID_BASE_URL} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg.Version=${VERSION} -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultAuth0Host=${AUTH0_HOST}" .
 .PHONY: build
 
 deps:

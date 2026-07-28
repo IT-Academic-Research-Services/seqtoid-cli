@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -29,14 +29,14 @@ var uploadSamplesCmd = &cobra.Command{
 			return fmt.Errorf("too many positional arguments, (maximum 1), args: %v", args)
 		}
 		directory := args[0]
-		sampleFiles, err := czid.SamplesFromDir(directory, verbose)
+		sampleFiles, err := seqtoid.SamplesFromDir(directory, verbose)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		options := czid.SampleOptions{}
+		options := seqtoid.SampleOptions{}
 
-		return czid.UploadSamplesFlow(
+		return seqtoid.UploadSamplesFlow(
 			sampleFiles,
 			stringMetadata,
 			projectName,

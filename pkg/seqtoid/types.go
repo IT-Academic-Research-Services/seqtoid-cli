@@ -1,4 +1,4 @@
-package czid
+package seqtoid
 
 type SampleOptions struct {
 	Technology         string

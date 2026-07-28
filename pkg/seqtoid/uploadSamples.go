@@ -1,4 +1,4 @@
-package czid
+package seqtoid
 
 import (
 	"fmt"
@@ -56,7 +56,7 @@ type UploadInfo struct {
 	S3Path            string  `json:"s3_path"`
 }
 
-// Must match file type constants present in CZID's InputFile model
+// Must match file type constants present in SeqToID's InputFile model
 type inputFileType string
 const (
 	FASTQFileType inputFileType = "fastq"

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -33,19 +33,19 @@ var uploadSamplesCmd = &cobra.Command{
 		}
 
 		directory := args[0]
-		sampleFiles, err := czid.SamplesFromDir(directory, verbose)
+		sampleFiles, err := seqtoid.SamplesFromDir(directory, verbose)
 
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		return czid.UploadSamplesFlow(
+		return seqtoid.UploadSamplesFlow(
 			sampleFiles,
 			stringMetadata,
 			projectName,
 			metadataCSVPath,
 			workflow,
-			czid.SampleOptions{
+			seqtoid.SampleOptions{
 				Technology: Technologies[technology],
 			},
 			disableBuffer,

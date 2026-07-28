@@ -1,6 +1,6 @@
-package czid
+package seqtoid
 
-// This file is for interracting with the czid API
+// This file is for interracting with the SeqToID API
 
 import (
 	"bytes"
@@ -17,7 +17,7 @@ import (
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0"
 )
 
-var defaultCZIDBaseURL = ""
+var defaultBaseURL = ""
 
 // HTTPClient interface
 type HTTPClient interface {
@@ -40,7 +40,7 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 		return nil, err
 	}
 
-	baseURLString := defaultCZIDBaseURL
+	baseURLString := defaultBaseURL
 	if viper.IsSet("seqtoid_base_url") {
 		baseURLString = viper.GetString("seqtoid_base_url")
 	}
@@ -60,15 +60,15 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 
 	// TODO: don't exit, return an error type
 	if res.StatusCode == 401 || res.StatusCode == 403 {
-		fmt.Println("not authenticated with czid try running `czid login`")
+		fmt.Println("not authenticated with SeqToID try running `seqtoid login`")
 		os.Exit(1)
 	}
 	if res.StatusCode == 426 {
-		fmt.Println("czid-cli version out of date, please install the latest version here: `https://github.com/IT-Academic-Research-Services/seqtoid-cli`")
+		fmt.Println("seqtoid-cli version out of date, please install the latest version here: `https://github.com/IT-Academic-Research-Services/seqtoid-cli`")
 		os.Exit(1)
 	}
 	if res.StatusCode >= 400 {
-		return res, fmt.Errorf("czid API responded with error code %d", res.StatusCode)
+		return res, fmt.Errorf("SeqToID API responded with error code %d", res.StatusCode)
 	}
 
 	return res, nil

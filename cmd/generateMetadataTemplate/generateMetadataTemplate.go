@@ -7,7 +7,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -27,8 +27,8 @@ func generateMetadataTemplate(cmd *cobra.Command, output string, sampleNames []s
 		writer = csv.NewWriter(cmd.OutOrStdout())
 	}
 
-	metadata := czid.NewMetadata(stringMetadata)
-	templateCSV, err := czid.DefaultClient.GetTemplateCSV(sampleNames, metadata.HostGenome)
+	metadata := seqtoid.NewMetadata(stringMetadata)
+	templateCSV, err := seqtoid.DefaultClient.GetTemplateCSV(sampleNames, metadata.HostGenome)
 	templateCSV.LazyQuotes = true
 	if err != nil {
 		log.Fatal(err)

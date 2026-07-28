@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ var forSampleDirectoryCmd = &cobra.Command{
 		}
 		directory := args[0]
 
-		sampleFiles, err := czid.SamplesFromDir(directory, verbose)
+		sampleFiles, err := seqtoid.SamplesFromDir(directory, verbose)
 		if err != nil {
 			log.Fatal(err)
 		}

@@ -5,7 +5,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -19,7 +19,7 @@ for a given host organism.`,
 		if len(args) == 0 {
 			return errors.New("missing required positional argument: host-organism-name")
 		}
-		client := czid.DefaultClient
+		client := seqtoid.DefaultClient
 		fields, err := client.GetMetadataForHostGenome(args[0])
 		if err != nil {
 			log.Fatal(err)

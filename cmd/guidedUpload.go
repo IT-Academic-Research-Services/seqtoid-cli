@@ -54,7 +54,7 @@ func optionsSelect(cmd *cobra.Command, reader *bufio.Reader, message string, opt
 	return ""
 }
 
-func czidExec(cmd *cobra.Command, reason string, args ...string) {
+func seqtoidExec(cmd *cobra.Command, reason string, args ...string) {
 	prettyArgs := make([]string, len(args))
 	for i, s := range args {
 		if strings.ContainsRune(s, ' ') {
@@ -63,7 +63,7 @@ func czidExec(cmd *cobra.Command, reason string, args ...string) {
 			prettyArgs[i] = s
 		}
 	}
-	msg := fmt.Sprintf("%s, running `czid %s`\n", reason, strings.Join(prettyArgs, " "))
+	msg := fmt.Sprintf("%s, running `seqtoid %s`\n", reason, strings.Join(prettyArgs, " "))
 	_, err := io.WriteString(cmd.OutOrStdout(), msg)
 	if err != nil {
 		log.Fatal(err)
@@ -82,11 +82,11 @@ var guidedUploadCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		_, err := auth0.DefaultClient.IDToken()
 		if err != nil {
-			czidExec(cmd, "You are not currently logged in", "login")
+			seqtoidExec(cmd, "You are not currently logged in", "login")
 		}
 
 		if strings.ToLower(viper.GetString("accepted_user_agreement")) != "y" {
-			czidExec(cmd, "You have not yet accepted the user agreement", "accept-user-agreement")
+			seqtoidExec(cmd, "You have not yet accepted the user agreement", "accept-user-agreement")
 		}
 
 		reader := bufio.NewReader(cmd.InOrStdin())
@@ -213,7 +213,7 @@ Would you like to create one yourself or generate a template?`
 			} else {
 				templateArgs = append([]string{"generate-metadata-template", "for-sample-directory", dirname}, templateArgs...)
 			}
-			czidExec(cmd, "Generating metadata template", templateArgs...)
+			seqtoidExec(cmd, "Generating metadata template", templateArgs...)
 
 			getInput(
 				cmd,
@@ -223,7 +223,7 @@ Would you like to create one yourself or generate a template?`
 		}
 
 		uploadArgs = append(uploadArgs, "--metadata-csv", metadataFile)
-		czidExec(cmd, "Performing your upload", uploadArgs...)
+		seqtoidExec(cmd, "Performing your upload", uploadArgs...)
 	},
 }
 

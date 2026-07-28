@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
 	"github.com/spf13/cobra"
 )
 
@@ -28,16 +28,16 @@ var uploadSampleCmd = &cobra.Command{
 		r2path := ""
 
 		if sampleName == "" {
-			sampleName = czid.ToSampleName(r1path)
+			sampleName = seqtoid.ToSampleName(r1path)
 		}
 
-		sampleFiles := map[string]czid.SampleFiles{
+		sampleFiles := map[string]seqtoid.SampleFiles{
 			sampleName: {Single: []string{r1path}},
 		}
 
 		if len(args) > 1 {
 			r2path = args[1]
-			sampleFiles[sampleName] = czid.SampleFiles{R1: []string{r1path}, R2: []string{r2path}}
+			sampleFiles[sampleName] = seqtoid.SampleFiles{R1: []string{r1path}, R2: []string{r2path}}
 		}
 		if len(args) > 2 {
 			return fmt.Errorf("too many positional arguments (maximum 2), args: %v", args)
@@ -46,9 +46,9 @@ var uploadSampleCmd = &cobra.Command{
 			return errors.New("r1 and r2 cannot be the same file")
 		}
 
-		options := czid.SampleOptions{}
+		options := seqtoid.SampleOptions{}
 
-		return czid.UploadSamplesFlow(
+		return seqtoid.UploadSamplesFlow(
 			sampleFiles,
 			stringMetadata,
 			projectName,

@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-const AppName = "czid-cli"
+const AppName = "seqtoid-cli"
 
 // MkdirIfNotExists makes a directory if it doesn't exist
 func MkdirIfNotExists(dirname string) error {
