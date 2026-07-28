@@ -64,14 +64,14 @@ Follow the instructions for [installing from binaries](#from-binaries).
 1. Navigate to our [latest release](https://github.com/IT-Academic-Research-Services/seqtoid-cli/releases/latest).
 1. Available binaries will be under the `Assets` tab as archives (`.tar.gz` for Linux + MacOS, `.zip` for Windows)
 1. Download appropriate archive for your operating system and architecture
-1. Unzip the file, the `seqtoid` executable will be inside
+1. Unzip the file, the `seqtoid-cli` executable will be inside
 
     Linux + MacOS: `tar -xf path/to/archive.tar.gz`
 
     Windows: `expand-archive -path 'c:\path\to\archive.zip' -destinationpath '.\seqtoid-cli'`
 
 1. Files with shell completions are also inside so you can move them to the appropriate place for your shell
-1. To use the binary you either need to add it to your `PATH` so you can execute it as `seqtoid` or execute the binary directly with the path to the binary (i.e. `/path/to/seqtoid` on Linux + MacOS or `C:\path\to\seqtoid.exe` on windows). If you are executing the binary using it's path keep in mind that you should use the path to the seqtoid binary instead of the `seqtoid` command every time you use it.
+1. To use the binary you either need to add it to your `PATH` so you can execute it as `seqtoid-cli` or execute the binary directly with the path to the binary (i.e. `/path/to/seqtoid-cli` on Linux + MacOS or `C:\path\to\seqtoid-cli.exe` on windows). If you are executing the binary using it's path keep in mind that you should use the path to the seqtoid-cli binary instead of the `seqtoid-cli` command every time you use it.
 
 
 Note on MacOS: Currently we don't sign our binary so you will need to manually remove the quarentine attribute from the binary: `sudo xattr -d com.apple.quarantine path/to/binary`
@@ -84,7 +84,7 @@ Note on MacOS: Currently we don't sign our binary so you will need to manually r
 First log in with your SeqToID account:
 
 ```bash
-seqtoid login
+seqtoid-cli login
 ```
 
 You will be prompted to log in with your SeqToID account via the web.
@@ -92,7 +92,7 @@ You will be prompted to log in with your SeqToID account via the web.
 Accept the user agreement:
 
 ```bash
-seqtoid accept-user-agreement
+seqtoid-cli accept-user-agreement
 ```
 
 This will print the user agreement and prompt you for your agreement.
@@ -116,7 +116,7 @@ Once you have set up you can use the `upload-sample` command to upload your samp
 Linux + MacOS:
 
 ```bash
-seqtoid metagenomics upload-sample \
+seqtoid-cli metagenomics upload-sample \
   -p 'Project Name' \
   -s 'Sample Name' \
   --sequencing-platform Illumina \
@@ -128,7 +128,7 @@ seqtoid metagenomics upload-sample \
 Windows:
 
 ```Powershell
-seqtoid metagenomics upload-sample `
+seqtoid-cli metagenomics upload-sample `
   -p "Project Name" `
   -s "Sample Name" `
   --sequencing-platform Illumina `
@@ -144,7 +144,7 @@ Note: The sample name is optional. If it is not included it will be computed fro
 Linux + MacOS:
 
 ```bash
-seqtoid metagenomics upload-sample \
+seqtoid-cli metagenomics upload-sample \
   --project 'Your Project ID' \
   --sample-name 'Your Sample Name' \
   --metadata-csv 'Your_metadata_file.csv' \
@@ -156,7 +156,7 @@ seqtoid metagenomics upload-sample \
 Windows:
 
 ```Powershell
-seqtoid metagenomics upload-sample `
+seqtoid-cli metagenomics upload-sample `
   --project "Your Project ID" `
   --sample-name "Your Sample Name" `
   --metadata-csv "Your_metadata_file.csv" `
@@ -170,7 +170,7 @@ seqtoid metagenomics upload-sample `
 Linux + MacOS:
 
 ```bash
-seqtoid amr upload-sample \
+seqtoid-cli amr upload-sample \
   --project 'Your Project ID' \
   --sample-name 'Your Sample Name' \
   --metadata-csv 'Your_metadata_file.csv' \
@@ -180,7 +180,7 @@ seqtoid amr upload-sample \
 Windows:
 
 ```Powershell
-seqtoid amr upload-sample `
+seqtoid-cli amr upload-sample `
   --project "Your Project ID" `
   --sample-name "Your Sample Name" `
   --metadata-csv "Your_metadata_file.csv" `
@@ -213,7 +213,7 @@ Once you have set up you can use the `upload-samples` command to upload your dir
 Linux + MacOS:
 
 ```bash
-seqtoid metagenomics upload-samples \
+seqtoid-cli metagenomics upload-samples \
   -p 'Project Name' \
   --sequencing-platform Illumina \
   --metadata-csv your_metadata.csv \
@@ -224,7 +224,7 @@ seqtoid metagenomics upload-samples \
 Windows:
 
 ```Powershell
-seqtoid metagenomics upload-samples `
+seqtoid-cli metagenomics upload-samples `
   -p "Project Name" `
   --sequencing-platform Illumina `
   --metadata-csv your_metadata.csv `
@@ -237,7 +237,7 @@ seqtoid metagenomics upload-samples `
 Linux + MacOS:
 
 ```bash
-seqtoid metagenomics upload-samples \
+seqtoid-cli metagenomics upload-samples \
   --project 'Your Project ID' \
   --metadata-csv 'Your_metadata_file.csv' \
   --sequencing-platform 'Nanopore' \
@@ -248,7 +248,7 @@ seqtoid metagenomics upload-samples \
 Windows:
 
 ```Powershell
-seqtoid metagenomics upload-samples `
+seqtoid-cli metagenomics upload-samples `
   --project "Your Project ID" `
   --metadata-csv "Your_metadata_file.csv" `
   --sequencing-platform "Nanopore" `
@@ -261,7 +261,7 @@ seqtoid metagenomics upload-samples `
 Linux + MacOS:
 
 ```bash
-seqtoid amr upload-samples \
+seqtoid-cli amr upload-samples \
   -p 'Project Name' \
   --metadata-csv your_metadata.csv \
   -m 'Metadata Name=Metadata Value' \
@@ -271,7 +271,7 @@ seqtoid amr upload-samples \
 Windows:
 
 ```Powershell
-seqtoid amr upload-samples `
+seqtoid-cli amr upload-samples `
   -p "Project Name" `
   --metadata-csv your_metadata.csv `
   -m "Metadata Name=Metadata Value" `
@@ -284,8 +284,8 @@ seqtoid-cli can be configured with environment variables or files. By default co
 
 ### Configuration Options
 
-- `secret`: a secret used to persistently authenticate with SeqToID. Generated by running: `seqtoid login --persistent`
-- `accepted_user_agreement`: set to `Y` if the user has accepted the user agreement. Setting this manually means you accept the user agreement. Also set via: `seqtoid accept-user-agreement`
+- `secret`: a secret used to persistently authenticate with SeqToID. Generated by running: `seqtoid-cli login --persistent`
+- `accepted_user_agreement`: set to `Y` if the user has accepted the user agreement. Setting this manually means you accept the user agreement. Also set via: `seqtoid-cli accept-user-agreement`
 
 ## Differences from version 1
 
