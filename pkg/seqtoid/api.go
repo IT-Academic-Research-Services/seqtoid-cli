@@ -60,7 +60,7 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 
 	// TODO: don't exit, return an error type
 	if res.StatusCode == 401 || res.StatusCode == 403 {
-		fmt.Println("not authenticated with SeqToID try running `seqtoid-cli login`")
+		fmt.Println("not authenticated with SeqToID try running `seqtoid login`")
 		os.Exit(1)
 	}
 	if res.StatusCode == 426 {

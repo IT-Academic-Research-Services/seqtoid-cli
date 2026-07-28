@@ -101,7 +101,7 @@ Recommendation: start with the bare signed+notarized binary; add a `.pkg` only i
 2. **Publish the public key** (in the repo + on the releases page / a well-known URL) so users can
    import it to verify.
 3. (Optional, larger scope) stand up a real apt/yum repo with signed metadata — only if we want
-   `apt install seqtoid-cli` rather than "download the `.deb` and verify."
+   `apt install seqtoid` rather than "download the `.deb` and verify."
 
 ---
 
