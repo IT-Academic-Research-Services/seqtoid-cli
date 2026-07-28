@@ -7,7 +7,7 @@ on:
       - created
 
 env:
-  GO_VERSION: 1.18.2
+  GO_VERSION: "1.23"
 
 jobs:
   Build:
@@ -33,9 +33,7 @@ jobs:
       - name: Deps
         run: make deps
       - name: Test
-        run: |
-          make test
-          bash <(curl -s https://codecov.io/bash)
+        run: make test
   Dependencies:
     name: Dependencies
     runs-on: ubuntu-latest
@@ -76,9 +74,10 @@ jobs:
           version: '~> v2'
           args: release --clean --config ".goreleaser.prerelease.yml"
         env:
-          AUTH_0_CLIENT_ID: ${{ secrets.AUTH_0_CLIENT_ID }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_HOST: ${{ secrets.AUTH0_HOST }}
-          CZID_BASE_URL: ${{ secrets.CZID_BASE_URL }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+          SEQTOID_BASE_URL: ${{ secrets.SEQTOID_BASE_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   Release:
     name: Release
@@ -98,8 +97,9 @@ jobs:
           version: '~> v2'
           args: release --clean --config ".goreleaser.yml"
         env:
-          AUTH_0_CLIENT_ID: ${{ secrets.AUTH_0_CLIENT_ID }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
           AUTH0_HOST: ${{ secrets.AUTH0_HOST }}
-          CZID_BASE_URL: ${{ secrets.CZID_BASE_URL }}
+          AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
+          SEQTOID_BASE_URL: ${{ secrets.SEQTOID_BASE_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.CZIBUILDBOT_GITHUB_TOKEN }}
+          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
