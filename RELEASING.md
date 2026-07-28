@@ -1,6 +1,6 @@
 # Releasing the SeqToID CLI
 
-The `seqtoid-cli` binary is built and published by [GoReleaser](https://goreleaser.com/) from
+The `seqtoid` binary is built and published by [GoReleaser](https://goreleaser.com/) from
 [`.github/workflows/cicd.yml`](.github/workflows/cicd.yml). Cross-platform binaries, checksums,
 Linux packages (`.deb`/`.rpm`), and a Homebrew cask are produced automatically when a GitHub
 Release is created.
@@ -23,7 +23,7 @@ Steps to cut a production release:
 3. Create a GitHub Release from that tag (GitHub UI or `gh release create v6.1.0 --generate-notes`).
 4. The `Release` job publishes the artifacts to the Release and updates the Homebrew tap.
 
-The version string baked into the binary (`seqtoid-cli version`, and the `client` sent on upload — the
+The version string baked into the binary (`seqtoid version`, and the `client` sent on upload — the
 server enforces `MIN_CLI_VERSION`) comes from the git tag via the `pkg.Version` ldflag.
 
 ## Required repository secrets
@@ -53,13 +53,13 @@ All three repos are public and in the `IT-Academic-Research-Services` org, so Re
 publicly downloadable and the tap/bucket auto-populate:
 
 - `seqtoid-cli` — **public** (this repo). GitHub Release assets are the download backbone.
-- `homebrew-tap` — **public**. The `Release` job pushes `Casks/seqtoid-cli.rb` here.
+- `homebrew-tap` — **public**. The `Release` job pushes `Casks/seqtoid.rb` here.
 - `scoop-seqtoid` — **public**. The `Release` job pushes the Scoop manifest here.
 
 ## End-user install
 
-- **macOS:** `brew install IT-Academic-Research-Services/tap/seqtoid-cli`
-- **Windows:** `scoop bucket add seqtoid https://github.com/IT-Academic-Research-Services/scoop-seqtoid` then `scoop install seqtoid-cli`
+- **macOS:** `brew install IT-Academic-Research-Services/tap/seqtoid`
+- **Windows:** `scoop bucket add seqtoid https://github.com/IT-Academic-Research-Services/scoop-seqtoid` then `scoop install seqtoid`
 - **Linux:** download the tarball (or `.deb`/`.rpm`) from the [Releases page](https://github.com/IT-Academic-Research-Services/seqtoid-cli/releases)
 - **Any OS:** download the binary for your platform from the Releases page
 
@@ -76,10 +76,10 @@ publicly downloadable and the tap/bucket auto-populate:
   them. The cask strips the quarantine attribute on install as an interim measure; proper signing +
   notarization (and Windows signing) is a follow-up.
 - The first real release should be validated end to end (download each OS artifact, `brew install`
-  from the tap, confirm `seqtoid-cli version` and an upload against the target environment).
+  from the tap, confirm `seqtoid version` and an upload against the target environment).
 
 ## Local build
 
-`make build` produces a `seqtoid-cli` binary using the same ldflags, reading `AUTH0_CLIENT_ID`,
+`make build` produces a `seqtoid` binary using the same ldflags, reading `AUTH0_CLIENT_ID`,
 `AUTH0_HOST`, `AUTH0_AUDIENCE`, `SEQTOID_BASE_URL`, and `VERSION` from the environment. To dry-run the
 full release build without publishing: `goreleaser release --snapshot --clean`.

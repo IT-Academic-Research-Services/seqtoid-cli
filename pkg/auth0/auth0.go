@@ -293,7 +293,7 @@ func (c *Client) IDToken() (string, error) {
 		}
 		return t.IdToken, err
 	}
-	return "", fmt.Errorf("not authenticated, try running `seqtoid-cli login` or adding your `secret` to %s manually", viper.GetViper().ConfigFileUsed())
+	return "", fmt.Errorf("not authenticated, try running `seqtoid login` or adding your `secret` to %s manually", viper.GetViper().ConfigFileUsed())
 }
 
 // Login performs the auth0 device authorization flow:

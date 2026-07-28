@@ -23,7 +23,7 @@ var AmrCmd = &cobra.Command{
 	Long:  "Commands related to the amr pipeline",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		if strings.ToLower(viper.GetString("accepted_user_agreement")) != "y" {
-			fmt.Println("Cannot upload samples until the user agreement is accepted, run seqtoid-cli accept-user-agreement or set SEQTOID_CLI_ACCEPTED_USER_AGREEMENT=Y")
+			fmt.Println("Cannot upload samples until the user agreement is accepted, run seqtoid accept-user-agreement or set SEQTOID_CLI_ACCEPTED_USER_AGREEMENT=Y")
 			os.Exit(2)
 		}
 	},
