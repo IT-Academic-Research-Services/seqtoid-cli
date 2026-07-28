@@ -6,7 +6,7 @@ before:
 
 builds:
 - id: "build-with-completions"
-  binary: czid
+  binary: seqtoid
   env:
     - CGO_ENABLED=0
   goos:
@@ -15,13 +15,14 @@ builds:
     - amd64
   ldflags: &ldflags
     - -s -w
-    - -X github.com/chanzuckerberg/czid-cli/pkg.Version={{.Version}}
-    - -X github.com/chanzuckerberg/czid-cli/pkg/auth0.defaultClientID={{.Env.AUTH_0_CLIENT_ID}}
-    - -X github.com/chanzuckerberg/czid-cli/pkg/auth0.defaultAuth0Host={{.Env.AUTH0_HOST}}
-    - -X github.com/chanzuckerberg/czid-cli/pkg/czid.defaultCZIDBaseURL={{.Env.CZID_BASE_URL}}
+    - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg.Version={{.Version}}
+    - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultClientID={{.Env.AUTH0_CLIENT_ID}}
+    - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultAuth0Host={{.Env.AUTH0_HOST}}
+    - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0.defaultAudience={{.Env.AUTH0_AUDIENCE}}
+    - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid.defaultBaseURL={{.Env.SEQTOID_BASE_URL}}
   hooks:
     post: "scripts/generate_completions.sh {{.Path}}"
-- binary: czid
+- binary: seqtoid
   env:
     - CGO_ENABLED=0
   goos:
@@ -46,7 +47,7 @@ archives:
     wrap_in_directory: true
     format_overrides:
     - goos: windows
-      format: zip
+      formats: [ 'zip' ]
     files:
     - LICENSE.md
     - README.md
@@ -55,25 +56,33 @@ archives:
     - fish_completion
     - powershell_completion
 
-brews:
-- description: "A CLI for uploading samples to Chan Zuckerberg ID"
+homebrew_casks:
+- name: seqtoid
+  description: "A CLI for uploading samples to SeqToID"
   repository:
-    owner: chanzuckerberg
+    owner: IT-Academic-Research-Services
     name: homebrew-tap
     token: "{{.Env.HOMEBREW_TAP_GITHUB_TOKEN}}"
-  homepage: "https://github.com/chanzuckerberg/czid-cli"
-  test: system "#{bin}/czid --version"
-  install: |
-    bin.install "czid"
-    bash_completion.install "bash_completion" => "czid"
-    zsh_completion.install "zsh_completion" => "_czid"
+  homepage: "https://github.com/IT-Academic-Research-Services/seqtoid-cli"
+  completions:
+    bash: "bash_completion"
+    zsh: "zsh_completion"
+    fish: "fish_completion"
+  # The released binaries are not (yet) codesigned/notarized, so strip the macOS quarantine
+  # attribute on install to avoid Gatekeeper blocking the CLI. Revisit once signing is set up.
+  hooks:
+    post:
+      install: |
+        if OS.mac? && File.exist?("#{staged_path}/seqtoid")
+          system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/seqtoid"]
+        end
 
 nfpms:
-  - 
-    vendor: chanzuckerberg
-    maintainer: Todd Morse <todd@morsecodist.io>
-    homepage: "https://github.com/chanzuckerberg/czid-cli"
-    description: "A CLI for uploading samples to Chan Zuckerberg ID"
+  -
+    vendor: IT-Academic-Research-Services
+    maintainer: Academic Research Services <its-arssupport@ucsf.edu>
+    homepage: "https://github.com/IT-Academic-Research-Services/seqtoid-cli"
+    description: "A CLI for uploading samples to SeqToID"
     license: MIT
     # Default without version for easy latest release linking
     file_name_template: "{{.PackageName}}_{{ .Os }}_{{.Arch}}{{if .Arm}}v{{.Arm}}{{end}}{{if .Mips}}_{{.Mips}}{{end}}"
@@ -82,15 +91,15 @@ nfpms:
       - rpm
     contents:
       - src: "bash_completion"
-        dst: "/etc/bash_completion.d/czid"
+        dst: "/etc/bash_completion.d/seqtoid"
       - src: "zsh_completion"
-        dst: "/usr/share/zsh/functions/Completion/czid"
+        dst: "/usr/share/zsh/functions/Completion/seqtoid"
 
 checksum:
   name_template: "checksums.txt"
 
 snapshot:
-  name_template: "{{.Tag}}-next"
+  version_template: "{{.Tag}}-next"
 
 changelog:
   sort: asc
