@@ -9,7 +9,7 @@ import (
 )
 
 type createSamplesReqInputFile struct {
-	FileType	 string `json:"file_type"`
+	FileType     string `json:"file_type"`
 	Name         string `json:"name"`
 	Parts        string `json:"parts"`
 	Source       string `json:"source"`
@@ -54,13 +54,18 @@ type createSamplesRes struct {
 type UploadInfo struct {
 	MultipartUploadId *string `json:"multipart_upload_id"`
 	S3Path            string  `json:"s3_path"`
+	// Source is the original (non-obfuscated) file name the client sent. The server obfuscates
+	// the stored object name in S3Path (to keep PII out of S3 keys), so S3Path's basename can no
+	// longer be matched to a local file; Source carries the name to correlate on.
+	Source string `json:"source"`
 }
 
 // Must match file type constants present in SeqToID's InputFile model
 type inputFileType string
+
 const (
-	FASTQFileType inputFileType = "fastq"
-	PrimerBedFileType inputFileType = "primer_bed"
+	FASTQFileType             inputFileType = "fastq"
+	PrimerBedFileType         inputFileType = "primer_bed"
 	ReferenceSequenceFileType inputFileType = "reference_sequence"
 )
 
@@ -86,17 +91,17 @@ func (c *Client) CreateSamples(
 		files := sampleFiles[sampleName]
 		var filesMetadata []inputFileMetadata
 		if len(files.Single) > 0 {
-			metadata := inputFileMetadata {
+			metadata := inputFileMetadata{
 				Filename: StripLaneNumber(files.Single[0]),
 				FileType: FASTQFileType,
 			}
 			filesMetadata = []inputFileMetadata{metadata}
 		} else {
-			metadataR1 := inputFileMetadata {
+			metadataR1 := inputFileMetadata{
 				Filename: StripLaneNumber(files.R1[0]),
 				FileType: FASTQFileType,
 			}
-			metadataR2 := inputFileMetadata {
+			metadataR2 := inputFileMetadata{
 				Filename: StripLaneNumber(files.R2[0]),
 				FileType: FASTQFileType,
 			}
@@ -104,14 +109,14 @@ func (c *Client) CreateSamples(
 		}
 
 		if len(files.ReferenceFasta) > 0 {
-			metadata := inputFileMetadata { 
+			metadata := inputFileMetadata{
 				Filename: files.ReferenceFasta[0],
 				FileType: ReferenceSequenceFileType,
 			}
 			filesMetadata = append(filesMetadata, metadata)
 		}
 		if len(files.PrimerBed) > 0 {
-			metadata := inputFileMetadata {
+			metadata := inputFileMetadata{
 				Filename: files.PrimerBed[0],
 				FileType: PrimerBedFileType,
 			}
@@ -159,7 +164,7 @@ func (c *Client) CreateSamples(
 
 		for i, metadata := range filesMetadata {
 			sample.InputFileAttributes[i] = createSamplesReqInputFile{
-				FileType:	  string(metadata.FileType),
+				FileType:     string(metadata.FileType),
 				Name:         filepath.Base(metadata.Filename),
 				Parts:        filepath.Base(metadata.Filename),
 				Source:       filepath.Base(metadata.Filename),
