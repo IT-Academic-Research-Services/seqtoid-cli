@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/util"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

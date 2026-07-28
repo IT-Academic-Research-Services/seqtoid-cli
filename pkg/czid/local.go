@@ -78,7 +78,7 @@ func SamplesFromDir(directory string, verbose bool) (map[string]SampleFiles, err
 			sampleFiles := pairs[sampleName]
 
 			if len(pairs) >= 500 {
-				return fmt.Errorf("to not overwhelm CZ ID, please limit your uploads to less than 500 samples per upload, and not more than 1,000 samples per week")
+				return fmt.Errorf("to not overwhelm SeqToID, please limit your uploads to less than 500 samples per upload, and not more than 1,000 samples per week")
 			}
 
 			if IsR1(path) {

@@ -171,7 +171,7 @@ func (c *Client) ValidateSamplesMetadata(projectID int, samplesMetadata SamplesM
 	}
 	if hasNewHostGenomes {
 		fmt.Println(`some of your host organisms were not found in
-Chan Zuckerberg ID host filtering will only filter out ERCC reads
+SeqToID host filtering will only filter out ERCC reads
 confirm these host organisms are correct:`)
 		for _, hostGenome := range res.NewHostGenomes {
 			if !hostGenome.ShowAsOption {

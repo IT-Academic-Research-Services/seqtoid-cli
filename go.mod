@@ -1,4 +1,4 @@
-module github.com/chanzuckerberg/czid-cli
+module github.com/IT-Academic-Research-Services/seqtoid-cli
 
 go 1.16
 

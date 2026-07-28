@@ -14,7 +14,7 @@ import (
 
 	"github.com/spf13/viper"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/auth0"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0"
 )
 
 var defaultCZIDBaseURL = ""
@@ -41,8 +41,8 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 	}
 
 	baseURLString := defaultCZIDBaseURL
-	if viper.IsSet("czid_base_url") {
-		baseURLString = viper.GetString("czid_base_url")
+	if viper.IsSet("seqtoid_base_url") {
+		baseURLString = viper.GetString("seqtoid_base_url")
 	}
 	baseURL, err := url.Parse(baseURLString)
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 		os.Exit(1)
 	}
 	if res.StatusCode == 426 {
-		fmt.Println("czid-cli version out of date, please install the latest version here: `https://github.com/chanzuckerberg/czid-cli`")
+		fmt.Println("czid-cli version out of date, please install the latest version here: `https://github.com/IT-Academic-Research-Services/seqtoid-cli`")
 		os.Exit(1)
 	}
 	if res.StatusCode >= 400 {

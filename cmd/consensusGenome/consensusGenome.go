@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/util"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 )
 
 var projectName string

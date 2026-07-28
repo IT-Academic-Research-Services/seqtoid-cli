@@ -5,14 +5,14 @@ import (
 	"log"
 	"strings"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
 	"github.com/spf13/cobra"
 )
 
 var listMetadataForHostGenome = &cobra.Command{
 	Use:   "list-metadata-for-host-organism [host-organism-name]",
 	Short: "List metadata options for a host organism",
-	Long: `In Chan Zuckerberg ID some metadata fields are only supported for
+	Long: `In SeqToID some metadata fields are only supported for
 certain host organisms. This command lists the available fields
 for a given host organism.`,
 	RunE: func(cmd *cobra.Command, args []string) error {

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/auth0"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0"
 	"github.com/spf13/cobra"
 )
 

@@ -17,7 +17,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/smithy-go"
-	"github.com/chanzuckerberg/czid-cli/pkg/util"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/cheggaaa/pb/v3"
 )
 

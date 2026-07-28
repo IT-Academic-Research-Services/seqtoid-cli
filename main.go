@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/chanzuckerberg/czid-cli/cmd"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd"
 )
 
 func main() {

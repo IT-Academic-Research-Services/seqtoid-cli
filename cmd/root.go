@@ -7,11 +7,11 @@ import (
 	"os"
 	"path"
 
-	"github.com/chanzuckerberg/czid-cli/cmd/amr"
-	"github.com/chanzuckerberg/czid-cli/cmd/consensusGenome"
-	"github.com/chanzuckerberg/czid-cli/cmd/generateMetadataTemplate"
-	"github.com/chanzuckerberg/czid-cli/cmd/metagenomics"
-	"github.com/chanzuckerberg/czid-cli/pkg/util"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/amr"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/consensusGenome"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/generateMetadataTemplate"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/metagenomics"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -20,8 +20,8 @@ var cfgFile string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "czid",
-	Short: "A CLI for uploading samples to Chan Zuckerberg ID",
+	Use:   "seqtoid",
+	Short: "A CLI for uploading samples to SeqToID",
 }
 
 func init() {
@@ -62,7 +62,7 @@ func initConfig() {
 	// Check if verbose flag is set
 	verbose, _ := RootCmd.Flags().GetBool("verbose")
 
-	viper.SetEnvPrefix("czid_cli")
+	viper.SetEnvPrefix("seqtoid_cli")
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
@@ -70,7 +70,7 @@ func initConfig() {
 		if !errors.Is(err, os.ErrNotExist) {
 			log.Fatalf("Error reading config file: %s\n", err.Error())
 		} else if verbose {
-			fmt.Println("Config file not found. Run the command with '--config' to explicitly pass in a config.yaml file. Or set environment variables with the prefix CZID_CLI_* (eg CZID_CLI_SECRET)")
+			fmt.Println("Config file not found. Run the command with '--config' to explicitly pass in a config.yaml file. Or set environment variables with the prefix SEQTOID_CLI_* (eg SEQTOID_CLI_SECRET)")
 		}
 
 	}

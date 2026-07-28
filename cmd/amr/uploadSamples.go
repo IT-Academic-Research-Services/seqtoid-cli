@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/chanzuckerberg/czid-cli/pkg/czid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/czid"
 	"github.com/spf13/cobra"
 )
 

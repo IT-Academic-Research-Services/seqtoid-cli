@@ -5,7 +5,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/chanzuckerberg/czid-cli/pkg"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg"
 )
 
 type createSamplesReqInputFile struct {

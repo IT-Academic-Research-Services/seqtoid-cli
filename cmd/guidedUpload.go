@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
-	"github.com/chanzuckerberg/czid-cli/cmd/consensusGenome"
-	"github.com/chanzuckerberg/czid-cli/cmd/metagenomics"
-	"github.com/chanzuckerberg/czid-cli/pkg/auth0"
-	"github.com/chanzuckerberg/czid-cli/pkg/util"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/consensusGenome"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/metagenomics"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/auth0"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 )
 
 func getInput(cmd *cobra.Command, reader *bufio.Reader, message string) string {
@@ -78,7 +78,7 @@ func czidExec(cmd *cobra.Command, reason string, args ...string) {
 // versionCmd represents the guided-upload command
 var guidedUploadCmd = &cobra.Command{
 	Use:   "guided-upload",
-	Short: "guides you through an upload to CZID",
+	Short: "guides you through an upload to SeqToID",
 	Run: func(cmd *cobra.Command, args []string) {
 		_, err := auth0.DefaultClient.IDToken()
 		if err != nil {
@@ -176,8 +176,8 @@ var guidedUploadCmd = &cobra.Command{
 		}
 
 		metadataMsg := `To continue you will need a metadata csv file
-Here are instructions on how to make one: https://czid.org/metadata/instructions
-Here is a dictionary of our supported metadata: https://czid.org/metadata/dictionary
+Here are instructions on how to make one: https://seqtoid.org/metadata/instructions
+Here is a dictionary of our supported metadata: https://seqtoid.org/metadata/dictionary
 Would you like to create one yourself or generate a template?`
 		generate := optionsSelect(
 			cmd,
