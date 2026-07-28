@@ -20,6 +20,12 @@ import (
 var defaultClientID string = ""
 var defaultAuth0Host string = ""
 
+// defaultAudience is the OAuth audience requested during the device flow (ldflag-injectable, like
+// the others). It is decoupled from auth0Host() so a deployment using an Auth0 CUSTOM DOMAIN for its
+// endpoints (which cannot mint tokens for a <custom-domain>/api/v2/ audience) can point the audience
+// at the tenant's real Management API instead. Overridable via the auth0_audience config key.
+var defaultAudience string = ""
+
 func clientID() string {
 	if viper.IsSet("auth0_client_id") {
 		return viper.GetString("auth0_client_id")
@@ -32,6 +38,18 @@ func auth0Host() string {
 		return viper.GetString("auth0_host")
 	}
 	return defaultAuth0Host
+}
+
+func audience() string {
+	if viper.IsSet("auth0_audience") {
+		return viper.GetString("auth0_audience")
+	}
+	if defaultAudience != "" {
+		return defaultAudience
+	}
+	// Fallback to the upstream default: the tenant Management API (host + /api/v2/).
+	u := url.URL{Scheme: "https", Host: auth0Host(), Path: "api/v2/"}
+	return u.String()
 }
 
 const refreshTokenKey = "SECRET"
@@ -173,15 +191,10 @@ func addSeconds(t time.Time, s int) time.Time {
 
 func (c *Client) requestDeviceCode(persistent bool) (deviceCodeResponse, error) {
 	var d deviceCodeResponse
-	audience := url.URL{
-		Scheme: "https",
-		Host:   auth0Host(),
-		Path:   "api/v2/",
-	}
 	params := map[string]string{
 		"client_id": clientID(),
 		"scope":     "email openid",
-		"audience":  audience.String(),
+		"audience":  audience(),
 	}
 	if persistent {
 		params["scope"] = "email openid offline_access"
