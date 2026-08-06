@@ -1,0 +1,19 @@
+# seqtoid-cli — ENV-STAGING environment profile (env-staging.seqtoid.org)
+#
+# Usage:
+#   seqtoid --config /path/to/config/env-staging.yaml <command>
+# or copy to ~/.config/seqtoid-cli/config.yaml, or set SEQTOID_CLI_* env vars.
+#
+# These are public OAuth client config (native app / device flow — NO client secret).
+#
+# ⚠️ ALPHA NOTE: env-staging currently uses DEV's Auth0 tenant (auth.dev.seqtoid.org)
+# for alpha testing. After alpha it reverts to the dedicated STAGING Auth0 tenant —
+# at that point update auth0_host / auth0_client_id / auth0_audience below to the
+# staging tenant's values (base URL below stays the same).
+
+seqtoid_base_url: https://env-staging.seqtoid.org
+
+# Auth0 — TEMPORARILY the dev tenant (alpha); revert to staging tenant post-alpha.
+auth0_host: auth.dev.seqtoid.org
+auth0_client_id: ZUgpnLfFY64pS1LdW9PR6bMZFwhATuec
+auth0_audience: https://seqtoid-dev.us.auth0.com/api/v2/
