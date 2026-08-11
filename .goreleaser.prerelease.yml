@@ -44,7 +44,9 @@ release:
 archives:
   # Default without version for easy latest release linking
   - name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}{{if .Arm}}v{{.Arm}}{{end}}{{if .Mips}}_{{.Mips}}{{end}}"
-    wrap_in_directory: true
+    # false: keep archive layout consistent with .goreleaser.yml (see the note there -- a wrapped
+    # archive breaks the generated Homebrew cask's completion symlinks).
+    wrap_in_directory: false
     format_overrides:
     - goos: windows
       formats: [ 'zip' ]
