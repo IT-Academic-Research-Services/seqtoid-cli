@@ -91,6 +91,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      # Mint a short-lived installation token from the GH_ACTIONS_HELPER GitHub App to
+      # publish the Homebrew cask + scoop manifest (which live in separate repos). This is
+      # the fleet-standard cross-repo write mechanism (see seqtoid-web promote-to-env.yml /
+      # rollup workflows) -- no long-lived personal PAT. Requires the app to be installed on
+      # homebrew-tap + scoop-seqtoid with Contents:write, and repo var CI_APP_ENABLED=true.
+      # On a fork without the app the step is skipped and the publish step below no-ops.
+      - name: Generate app token
+        id: app_token
+        if: ${{ vars.CI_APP_ENABLED == 'true' }}
+        uses: chanzuckerberg/github-app-token@365b1f2db827eb8f17288ec335b1a7e3c03ff683 # v1.1.4
+        with:
+          app_id: ${{ secrets.GH_ACTIONS_HELPER_APP_ID }}
+          private_key: ${{ secrets.GH_ACTIONS_HELPER_PK }}
       - uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
@@ -102,5 +115,7 @@ jobs:
           AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
           SEQTOID_BASE_URL: ${{ secrets.SEQTOID_BASE_URL }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # One token with write access to BOTH public dist repos (homebrew-tap + scoop-seqtoid).
-          PUBLISH_GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN }}
+          # App-minted installation token with write access to BOTH public dist repos
+          # (homebrew-tap + scoop-seqtoid). Falls back to the PUBLISH_GITHUB_TOKEN secret if
+          # the app path is disabled, so an explicit PAT still works as an override.
+          PUBLISH_GITHUB_TOKEN: ${{ steps.app_token.outputs.token || secrets.PUBLISH_GITHUB_TOKEN }}
