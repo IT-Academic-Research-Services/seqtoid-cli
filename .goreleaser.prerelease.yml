@@ -55,6 +55,12 @@ archives:
     - zsh_completion
     - fish_completion
     - powershell_completion
+    # Ship the per-environment config profiles so one package targets dev or env-staging
+    # at runtime (seqtoid --config <profile>). Mirrors the full-release .goreleaser.yml
+    # so prereleases are not missing the profiles. See config/README.md.
+    - config/dev.yaml
+    - config/env-staging.yaml
+    - config/README.md
 
 checksum:
   name_template: "checksums.txt"
