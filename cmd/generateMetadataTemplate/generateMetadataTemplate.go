@@ -29,10 +29,10 @@ func generateMetadataTemplate(cmd *cobra.Command, output string, sampleNames []s
 
 	metadata := seqtoid.NewMetadata(stringMetadata)
 	templateCSV, err := seqtoid.DefaultClient.GetTemplateCSV(sampleNames, metadata.HostGenome)
-	templateCSV.LazyQuotes = true
 	if err != nil {
 		log.Fatal(err)
 	}
+	templateCSV.LazyQuotes = true
 
 	fieldNames, err := templateCSV.Read()
 	if err != nil {
