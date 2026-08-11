@@ -53,10 +53,11 @@ archives:
     files:
     - LICENSE.md
     - README.md
-    - bash_completion
-    - zsh_completion
-    - fish_completion
-    - powershell_completion
+    # Command-named completions (see scripts/generate_completions.sh); mirrors .goreleaser.yml.
+    - completions/bash/seqtoid
+    - completions/zsh/seqtoid
+    - completions/fish/seqtoid
+    - completions/powershell/seqtoid
     # Ship the per-environment config profiles so one package targets dev or env-staging
     # at runtime (seqtoid --config <profile>). Mirrors the full-release .goreleaser.yml
     # so prereleases are not missing the profiles. See config/README.md.

@@ -56,10 +56,12 @@ archives:
     files:
     - LICENSE.md
     - README.md
-    - bash_completion
-    - zsh_completion
-    - fish_completion
-    - powershell_completion
+    # Completions are generated under completions/<shell>/seqtoid (see scripts/generate_completions.sh)
+    # so Homebrew/nfpm install them with idiomatic, command-named targets.
+    - completions/bash/seqtoid
+    - completions/zsh/seqtoid
+    - completions/fish/seqtoid
+    - completions/powershell/seqtoid
     # Ship the per-environment config profiles so one package targets dev or env-staging
     # at runtime (seqtoid --config <profile>). See config/README.md.
     - config/dev.yaml
@@ -74,10 +76,12 @@ homebrew_casks:
     name: homebrew-tap
     token: "{{.Env.PUBLISH_GITHUB_TOKEN}}"
   homepage: "https://github.com/IT-Academic-Research-Services/seqtoid-cli"
+  # Homebrew derives the install target from each file's basename: seqtoid ->
+  # bash_completion.d/seqtoid, _seqtoid (zsh autoload), seqtoid.fish.
   completions:
-    bash: "bash_completion"
-    zsh: "zsh_completion"
-    fish: "fish_completion"
+    bash: "completions/bash/seqtoid"
+    zsh: "completions/zsh/seqtoid"
+    fish: "completions/fish/seqtoid"
   # The released binaries are not (yet) codesigned/notarized, so strip the macOS quarantine
   # attribute on install to avoid Gatekeeper blocking the CLI. Revisit once signing is set up.
   hooks:
@@ -113,10 +117,13 @@ nfpms:
       - deb
       - rpm
     contents:
-      - src: "bash_completion"
+      - src: "completions/bash/seqtoid"
         dst: "/etc/bash_completion.d/seqtoid"
-      - src: "zsh_completion"
-        dst: "/usr/share/zsh/functions/Completion/seqtoid"
+      - src: "completions/zsh/seqtoid"
+        # zsh autoloads completion files named _<command> from its fpath.
+        dst: "/usr/share/zsh/vendor-completions/_seqtoid"
+      - src: "completions/fish/seqtoid"
+        dst: "/usr/share/fish/vendor_completions.d/seqtoid.fish"
       # Per-environment config profiles (dev / env-staging) shipped as example configs.
       - src: "config/dev.yaml"
         dst: "/etc/seqtoid-cli/dev.yaml"
