@@ -1,0 +1,22 @@
+# seqtoid-cli — DEV environment profile
+#
+# Usage:
+#   seqtoid --config /path/to/config/dev.yaml <command>
+# or copy to the default config location:
+#   ~/.config/seqtoid-cli/config.yaml   (Linux/macOS)
+# or set the equivalent env vars (viper prefix SEQTOID_CLI_):
+#   SEQTOID_CLI_SEQTOID_BASE_URL, SEQTOID_CLI_AUTH0_HOST,
+#   SEQTOID_CLI_AUTH0_CLIENT_ID, SEQTOID_CLI_AUTH0_AUDIENCE
+#
+# These are public OAuth client config (native app / device flow — NO client secret).
+# They override the binary's ldflag-baked defaults at runtime.
+
+seqtoid_base_url: https://dev.seqtoid.org
+
+# Auth0 (SeqToID dev tenant, custom domain)
+auth0_host: auth.dev.seqtoid.org
+# CLI native-app client id — must equal the server's AUTH0_CLI_AUDIENCE (verify_cli checks the id_token aud).
+auth0_client_id: ZUgpnLfFY64pS1LdW9PR6bMZFwhATuec
+# Device-flow requested audience: the tenant's REAL Management API (the custom domain
+# auth.dev.seqtoid.org cannot mint tokens for its own /api/v2/), per pkg/auth0/auth0.go.
+auth0_audience: https://seqtoid-dev.us.auth0.com/api/v2/

@@ -55,6 +55,11 @@ archives:
     - zsh_completion
     - fish_completion
     - powershell_completion
+    # Ship the per-environment config profiles so one package targets dev or env-staging
+    # at runtime (seqtoid --config <profile>). See config/README.md.
+    - config/dev.yaml
+    - config/env-staging.yaml
+    - config/README.md
 
 homebrew_casks:
 - name: seqtoid
@@ -107,6 +112,13 @@ nfpms:
         dst: "/etc/bash_completion.d/seqtoid"
       - src: "zsh_completion"
         dst: "/usr/share/zsh/functions/Completion/seqtoid"
+      # Per-environment config profiles (dev / env-staging) shipped as example configs.
+      - src: "config/dev.yaml"
+        dst: "/etc/seqtoid-cli/dev.yaml"
+        type: config
+      - src: "config/env-staging.yaml"
+        dst: "/etc/seqtoid-cli/env-staging.yaml"
+        type: config
 
 checksum:
   name_template: "checksums.txt"
