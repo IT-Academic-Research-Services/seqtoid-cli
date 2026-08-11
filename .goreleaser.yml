@@ -44,7 +44,12 @@ release:
 archives:
   # Default without version for easy latest release linking
   - name_template: "{{.ProjectName}}_{{.Os}}_{{.Arch}}{{if .Arm}}v{{.Arm}}{{end}}{{if .Mips}}_{{.Mips}}{{end}}"
-    wrap_in_directory: true
+    # false: extract files at the archive root (no seqtoid-cli_<os>_<arch>/ wrapper). goreleaser's
+    # generated Homebrew cask only un-nests the binary via `rename`, NOT the completion files, so with
+    # wrapping the `bash_completion`/`zsh_completion`/`fish_completion` stanzas point at paths that do
+    # not exist and `brew install` fails on a dangling symlink. Unwrapped, binary + completions + the
+    # scoop bin path all resolve at the staged root.
+    wrap_in_directory: false
     format_overrides:
     - goos: windows
       formats: [ 'zip' ]

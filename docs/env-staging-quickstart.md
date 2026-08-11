@@ -25,20 +25,27 @@ unpack it, and put `seqtoid` on your `PATH`.
 
 The CLI defaults to **dev**. To target **env-staging**, pick ONE of these:
 
-**A. Config profile (recommended — shipped in the release ≥ v6.1.0):**
-```bash
-# The archive/cask includes config/env-staging.yaml. Point --config at it:
-seqtoid --config "$(brew --prefix)/share/seqtoid-cli/env-staging.yaml" <command>
-# ...or copy it to the default location so you don't pass --config each time:
-mkdir -p ~/.config/seqtoid-cli
-cp /path/to/env-staging.yaml ~/.config/seqtoid-cli/config.yaml
-```
-
-**B. Environment variable (works with any build, no profile file needed):**
+**A. Environment variable (simplest — works with every install, no file needed):**
 ```bash
 export SEQTOID_CLI_SEQTOID_BASE_URL=https://env-staging.seqtoid.org
 ```
-Set this in your shell rc so it persists. All CLI commands then hit env-staging.
+Set this in your shell rc (`~/.zshrc` / `~/.bashrc`) so it persists. All CLI commands then hit env-staging.
+
+**B. Config profile file** — the release archive ships `config/env-staging.yaml`. Point `--config` at it,
+or copy it to the default location so you don't pass the flag each time:
+```bash
+# Tarball install: the profile is in the archive you unpacked, at ./config/env-staging.yaml
+seqtoid --config ./config/env-staging.yaml <command>
+
+# Homebrew install: the profile ships in the Caskroom (version in the path), e.g.
+#   $(brew --prefix)/Caskroom/seqtoid/<version>/config/env-staging.yaml
+# Copy it to the default config location to use it without --config:
+mkdir -p ~/.config/seqtoid-cli
+cp "$(brew --prefix)/Caskroom/seqtoid/$(seqtoid version)/config/env-staging.yaml" ~/.config/seqtoid-cli/config.yaml
+```
+
+> Prefer **A** unless you specifically want a checked-in profile — the env var is the same on every platform
+> and needs no path lookups.
 
 > Auth is already baked correctly for the alpha (shared dev Auth0 tenant,
 > `auth.dev.seqtoid.org`) — you only ever override the **base URL** to switch environments.
