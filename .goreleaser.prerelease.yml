@@ -22,10 +22,17 @@ builds:
     - -X github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid.defaultBaseURL={{.Env.SEQTOID_BASE_URL}}
   hooks:
     post: "scripts/generate_completions.sh {{.Path}}"
+# Cross-compiled targets that do NOT run the completion post-hook. The hook execs the
+# freshly built binary to emit completion scripts, which only works for a natively
+# runnable target on the amd64 CI runner -- so linux/amd64 is built above and the
+# arch-independent completion files it produces are shipped into every archive/package
+# by path. linux/arm64 (Ubuntu on Graviton/ARM) is built here without re-running the hook;
+# the linux/amd64 entry stays ignored so it is not duplicated with build-with-completions.
 - binary: seqtoid
   env:
     - CGO_ENABLED=0
   goos:
+    - linux
     - darwin
     - windows
   goarch:
