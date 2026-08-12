@@ -37,13 +37,20 @@ func (c *Client) GetMetadataForHostGenome(hostGenome string) ([]MetadataField, e
 		getMetadataForHostGenomeReq{},
 		&res,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	metadataFields := make([]MetadataField, len(res))
 	for i, f := range res {
 		var ex Example
-		err = json.Unmarshal([]byte(f.Examples), &ex)
-		if err != nil {
-			return []MetadataField{}, err
+		// Not every field has examples; the server returns null for those, which
+		// decodes to an empty string. Unmarshalling "" would fail ("unexpected end
+		// of JSON input"), so skip parsing and leave the zero-value Example.
+		if f.Examples != "" {
+			if err := json.Unmarshal([]byte(f.Examples), &ex); err != nil {
+				return nil, err
+			}
 		}
 		metadataFields[i] = MetadataField{
 			Name:        f.DisplayName,
@@ -52,5 +59,5 @@ func (c *Client) GetMetadataForHostGenome(hostGenome string) ([]MetadataField, e
 		}
 	}
 
-	return metadataFields, err
+	return metadataFields, nil
 }

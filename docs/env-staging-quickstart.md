@@ -31,21 +31,29 @@ export SEQTOID_CLI_SEQTOID_BASE_URL=https://env-staging.seqtoid.org
 ```
 Set this in your shell rc (`~/.zshrc` / `~/.bashrc`) so it persists. All CLI commands then hit env-staging.
 
-**B. Config profile file** — the release archive ships `config/env-staging.yaml`. Point `--config` at it,
-or copy it to the default location so you don't pass the flag each time:
+**B. Config profile with `--config`** — the release archive ships `config/env-staging.yaml`; point `--config` at it:
 ```bash
-# Tarball install: the profile is in the archive you unpacked, at ./config/env-staging.yaml
+# Tarball install: the profile is in the archive you unpacked
 seqtoid --config ./config/env-staging.yaml <command>
 
-# Homebrew install: the profile ships in the Caskroom (version in the path), e.g.
-#   $(brew --prefix)/Caskroom/seqtoid/<version>/config/env-staging.yaml
-# Copy it to the default config location to use it without --config:
-mkdir -p ~/.config/seqtoid-cli
-cp "$(brew --prefix)/Caskroom/seqtoid/$(seqtoid version)/config/env-staging.yaml" ~/.config/seqtoid-cli/config.yaml
+# Homebrew install: the profile ships in the Caskroom (version is in the path)
+seqtoid --config "$(brew --prefix)/Caskroom/seqtoid/$(seqtoid version)/config/env-staging.yaml" <command>
 ```
 
-> Prefer **A** unless you specifically want a checked-in profile — the env var is the same on every platform
-> and needs no path lookups.
+**C. Default config file (no flag each time)** — copy the profile to the CLI's config directory. That directory
+is **OS-specific** (`os.UserConfigDir`), so use the right one:
+```bash
+# macOS:
+mkdir -p "$HOME/Library/Application Support/seqtoid-cli"
+cp <path-to>/env-staging.yaml "$HOME/Library/Application Support/seqtoid-cli/config.yaml"
+
+# Linux:
+mkdir -p ~/.config/seqtoid-cli
+cp <path-to>/env-staging.yaml ~/.config/seqtoid-cli/config.yaml
+```
+
+> Prefer **A** (env var) unless you want a checked-in profile — it's identical on every platform and needs no
+> path lookups. On macOS the config dir is `~/Library/Application Support/seqtoid-cli`, **not** `~/.config`.
 
 > Auth is already baked correctly for the alpha (shared dev Auth0 tenant,
 > `auth.dev.seqtoid.org`) — you only ever override the **base URL** to switch environments.

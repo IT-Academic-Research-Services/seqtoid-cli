@@ -16,9 +16,12 @@ All values are public OAuth client config (native app / device flow — **no cli
    ```
    seqtoid --config /path/to/config/env-staging.yaml metagenomics upload ...
    ```
-2. **Default config file** — copy a profile to the OS config dir:
+2. **Default config file** — copy a profile to the OS config dir (`os.UserConfigDir`, which differs by OS):
    ```
-   cp config/env-staging.yaml ~/.config/seqtoid-cli/config.yaml   # Linux/macOS
+   # macOS:
+   cp config/env-staging.yaml "$HOME/Library/Application Support/seqtoid-cli/config.yaml"
+   # Linux:
+   cp config/env-staging.yaml ~/.config/seqtoid-cli/config.yaml
    ```
 3. **Environment variables** (viper prefix `SEQTOID_CLI_`), e.g.:
    ```
