@@ -19,7 +19,8 @@ seqtoid version
 
 **Linux / Windows (or no Homebrew):** download the archive for your platform from the
 [latest release](https://github.com/IT-Academic-Research-Services/seqtoid-cli/releases/latest),
-unpack it, and put `seqtoid` on your `PATH`.
+unpack it, and put `seqtoid` on your `PATH`. On Ubuntu/Linux there are also `.deb`/`.rpm`
+packages (amd64 and arm64) -- see the [Ubuntu / Linux quickstart](./ubuntu-quickstart.md).
 
 ## 2. Point the CLI at env-staging
 
