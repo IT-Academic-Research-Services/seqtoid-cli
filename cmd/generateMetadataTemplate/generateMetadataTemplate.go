@@ -8,13 +8,21 @@ import (
 	"os"
 
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/seqtoid"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/spf13/cobra"
 )
 
+var rawMetadata []string
 var stringMetadata map[string]string
 var output string
 
 func generateMetadataTemplate(cmd *cobra.Command, output string, sampleNames []string) {
+	parsedMetadata, err := util.ParseMetadataPairs(rawMetadata)
+	if err != nil {
+		log.Fatal(err)
+	}
+	stringMetadata = parsedMetadata
+
 	var writer *csv.Writer
 	if output != "" {
 		f, err := os.Create(output)
@@ -87,6 +95,6 @@ var GenerateMetadataTemplateCmd = &cobra.Command{
 }
 
 func loadSharedFlags(c *cobra.Command) {
-	c.Flags().StringToStringVarP(&stringMetadata, "metadatum", "m", map[string]string{}, "Metadatum name and value for your sample, ex. 'host=Human'")
+	c.Flags().StringArrayVarP(&rawMetadata, "metadatum", "m", nil, "Metadatum name and value for your sample, ex. 'host=Human'. Repeat -m for multiple; values may contain commas (e.g. a location).")
 	c.Flags().StringVarP(&output, "output", "o", "", "Output file path (optional, by default prints to stdout)")
 }
