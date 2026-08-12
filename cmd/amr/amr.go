@@ -6,11 +6,13 @@ import (
 	"os"
 	"strings"
 
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var projectName string
+var rawMetadata []string
 var stringMetadata map[string]string
 var metadataCSVPath string
 var disableBuffer bool
@@ -31,12 +33,18 @@ var AmrCmd = &cobra.Command{
 
 func loadSharedFlags(c *cobra.Command) {
 	c.Flags().StringVarP(&projectName, "project", "p", "", "Project name. Make sure the project is created on the website (required)")
-	c.Flags().StringToStringVarP(&stringMetadata, "metadatum", "m", map[string]string{}, "Metadatum name and value for your sample, ex. 'host=Human'")
+	c.Flags().StringArrayVarP(&rawMetadata, "metadatum", "m", nil, "Metadatum name and value for your sample, ex. 'host=Human'. Repeat -m for multiple; values may contain commas (e.g. a location).")
 	c.Flags().StringVar(&metadataCSVPath, "metadata-csv", "", "Metadata local file path.")
 	c.Flags().BoolVar(&disableBuffer, "disable-buffer", false, "Disable shared buffer pool (useful if running out of memory)")
 }
 
 func validateCommonArgs() error {
+	parsed, err := util.ParseMetadataPairs(rawMetadata)
+	if err != nil {
+		return err
+	}
+	stringMetadata = parsed
+
 	if projectName == "" {
 		return errors.New("missing required argument: project")
 	}

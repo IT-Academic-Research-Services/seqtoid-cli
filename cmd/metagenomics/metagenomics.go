@@ -12,6 +12,7 @@ import (
 )
 
 var projectName string
+var rawMetadata []string
 var stringMetadata map[string]string
 var metadataCSVPath string
 var disableBuffer bool
@@ -57,7 +58,7 @@ func loadSharedFlags(c *cobra.Command) {
 	)
 
 	c.Flags().StringVarP(&projectName, "project", "p", "", "Project name. Make sure the project is created on the website")
-	c.Flags().StringToStringVarP(&stringMetadata, "metadatum", "m", map[string]string{}, "metadatum name and value for your sample, ex. 'host=Human'")
+	c.Flags().StringArrayVarP(&rawMetadata, "metadatum", "m", nil, "Metadatum name and value for your sample, ex. 'host=Human'. Repeat -m for multiple; values may contain commas (e.g. a location).")
 	c.Flags().StringVar(&metadataCSVPath, "metadata-csv", "", "Metadata local file path.")
 	c.Flags().StringVar(&technology, "sequencing-platform", "", fmt.Sprintf("Sequencing platform used to sequence the sample, options: %s", technologyOptionsString))
 	c.Flags().StringVar(
@@ -71,6 +72,12 @@ func loadSharedFlags(c *cobra.Command) {
 }
 
 func validateCommonArgs() error {
+	parsed, err := util.ParseMetadataPairs(rawMetadata)
+	if err != nil {
+		return err
+	}
+	stringMetadata = parsed
+
 	if projectName == "" {
 		return errors.New("missing required argument: project")
 	}

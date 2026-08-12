@@ -131,6 +131,8 @@ func UploadSamplesFlow(
 		if err != nil {
 			log.Fatal(err)
 		}
+		fmt.Printf("uploaded sample %q\n", sample.Name)
 	}
+	fmt.Printf("done: uploaded %d sample(s) to project %q; they are now processing on SeqToID\n", len(samplesMetadata), projectName)
 	return nil
 }

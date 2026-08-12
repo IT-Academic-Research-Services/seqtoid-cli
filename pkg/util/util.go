@@ -5,6 +5,7 @@ import (
 	"os"
 	"path"
 	"runtime"
+	"strings"
 	"sync"
 	"github.com/spf13/viper"
 )
@@ -102,4 +103,21 @@ func StringMapKeys(m map[string]string) []string {
 		keys = append(keys, key)
 	}
 	return keys
+}
+
+// ParseMetadataPairs turns raw "name=value" strings (one per --metadatum/-m flag)
+// into a name->value map. It splits on the FIRST "=" only, so values may contain
+// commas and "=" characters (e.g. a location like "Santa Barbara, CA, USA"). This is
+// why -m is a repeated string flag rather than a comma-split key=value map flag.
+func ParseMetadataPairs(pairs []string) (map[string]string, error) {
+	m := make(map[string]string, len(pairs))
+	for _, pair := range pairs {
+		name, value, found := strings.Cut(pair, "=")
+		name = strings.TrimSpace(name)
+		if !found || name == "" {
+			return nil, fmt.Errorf("invalid metadatum %q: expected format 'name=value'", pair)
+		}
+		m[name] = value
+	}
+	return m, nil
 }
