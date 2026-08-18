@@ -46,7 +46,8 @@ var uploadSamplesCmd = &cobra.Command{
 			metadataCSVPath,
 			workflow,
 			seqtoid.SampleOptions{
-				Technology: Technologies[technology],
+				Technology:             Technologies[technology],
+				GuppyBasecallerSetting: guppyBasecallerSetting,
 			},
 			disableBuffer,
 		)

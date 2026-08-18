@@ -25,12 +25,16 @@ type CreateSamplesReqSample struct {
 	Status              string                      `json:"status"`
 	Workflows           []string                    `json:"workflows"`
 	Technology          string                      `json:"technology"`
-	WetlabProtocol      string                      `json:"wetlab_protocol"`
-	MedakaModel         *string                     `json:"medaka_model,omitempty"`
-	ClearLabs           *bool                       `json:"clearlabs,omitempty"`
-	ReferenceAccession  *string                     `json:"accession_id,omitempty"`
-	ReferenceFasta      *string                     `json:"ref_fasta,omitempty"`
-	PrimerBed           *string                     `json:"primer_bed,omitempty"`
+	// GuppyBasecallerSetting is required by the server for long-read (Nanopore/ONT)
+	// metagenomics -- it is a direct input to the long-read mNGS WDL and changes assembly
+	// behavior. Omit it for Illumina/other workflows (the server rejects it there).
+	GuppyBasecallerSetting *string `json:"guppy_basecaller_setting,omitempty"`
+	WetlabProtocol         string  `json:"wetlab_protocol"`
+	MedakaModel            *string `json:"medaka_model,omitempty"`
+	ClearLabs              *bool   `json:"clearlabs,omitempty"`
+	ReferenceAccession     *string `json:"accession_id,omitempty"`
+	ReferenceFasta         *string `json:"ref_fasta,omitempty"`
+	PrimerBed              *string `json:"primer_bed,omitempty"`
 }
 
 type samplesReq struct {
@@ -134,6 +138,11 @@ func (c *Client) CreateSamples(
 
 		if sampleOptions.Technology != "" {
 			sample.Technology = sampleOptions.Technology
+		}
+
+		if sampleOptions.GuppyBasecallerSetting != "" {
+			guppyBasecallerSetting := sampleOptions.GuppyBasecallerSetting
+			sample.GuppyBasecallerSetting = &guppyBasecallerSetting
 		}
 
 		if sampleOptions.WetlabProtocol != "" {
