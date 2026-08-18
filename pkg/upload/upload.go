@@ -166,7 +166,12 @@ func (u *Uploader) UploadFiles(filenames []string, s3path string, multipartUploa
 	}
 
 	u.c.parts = make(chan int64)
-	defer close(u.c.parts)
+	// Close whatever channel u.c.parts points at WHEN THIS FUNCTION RETURNS. A bare
+	// `defer close(u.c.parts)` evaluates its argument at registration, pinning it to this
+	// first channel; the resume-failure branch below then closes that same channel AND swaps
+	// in a new one, so the deferred close would double-close the first channel and panic
+	// ("close of closed channel"). Deferring a closure defers the field read to return time.
+	defer func() { close(u.c.parts) }()
 
 	go u.runProgressBar(size)
 
@@ -175,9 +180,11 @@ func (u *Uploader) UploadFiles(filenames []string, s3path string, multipartUploa
 		_, err = u.u.ResumeUpload(context.Background(), &input, multipartUploadId)
 		if err != nil {
 			fmt.Println("could not resume upload, starting fresh upload")
+			// End the resume progress bar by closing its channel, then swap in a fresh one
+			// for the restart. The deferred closure above closes THIS new channel at return,
+			// so we must NOT defer a second close here.
 			close(u.c.parts)
 			u.c.parts = make(chan int64)
-			defer close(u.c.parts)
 			go u.runProgressBar(size)
 			_, err = u.u.Upload(context.Background(), &input)
 		}
