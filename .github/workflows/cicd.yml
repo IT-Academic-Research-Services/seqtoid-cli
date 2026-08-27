@@ -119,3 +119,25 @@ jobs:
           # (homebrew-tap + scoop-seqtoid). Falls back to the PUBLISH_GITHUB_TOKEN secret if
           # the app path is disabled, so an explicit PAT still works as an override.
           PUBLISH_GITHUB_TOKEN: ${{ steps.app_token.outputs.token || secrets.PUBLISH_GITHUB_TOKEN }}
+
+  # Non-blocking release-notes recording. Fires ONLY after a successful non-prerelease Release and calls
+  # the shared collector in seqtoid-web. It never gates or delays the release: it `needs:` the Release
+  # job, runs only on its success, and the reusable workflow is all-continue-on-error and self-no-ops
+  # unless the changelog-<env> Environment is provisioned. The CLI is env-agnostic (a client tool, not
+  # deployed to an env); it is recorded to the public feed under prod. See the PR body: WHICH env(s) a
+  # CLI release records to is a product decision to confirm.
+  record-changelog:
+    name: Record cli release notes (non-blocking)
+    needs: Release
+    if: ${{ always() && needs.Release.result == 'success' }}
+    uses: IT-Academic-Research-Services/seqtoid-web/.github/workflows/record-changelog.yml@main
+    with:
+      env_name: prod
+      component: cli
+      source_repo: IT-Academic-Research-Services/seqtoid-cli
+      new_sha: ${{ github.sha }}
+      default_piece: "Command-line tool"
+    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
