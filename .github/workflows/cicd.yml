@@ -119,3 +119,36 @@ jobs:
           # (homebrew-tap + scoop-seqtoid). Falls back to the PUBLISH_GITHUB_TOKEN secret if
           # the app path is disabled, so an explicit PAT still works as an override.
           PUBLISH_GITHUB_TOKEN: ${{ steps.app_token.outputs.token || secrets.PUBLISH_GITHUB_TOKEN }}
+  RecordChangelog:
+    name: Record changelog
+    # A published (non-prerelease) GitHub Release is the prod deploy of the CLI. Record it in the
+    # release-notes ledger under the Command-line tool piece. The ledger can only be written from
+    # cypherid-web-infra (the SCP-allowlisted gha-deploy sub), so dispatch its record-changelog caller.
+    # Best-effort -- never gates a release. Needs seqtoid-ci-app actions:write on cypherid-web-infra.
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'release' && !github.event.release.prerelease && vars.CI_APP_ENABLED == 'true' }}
+    needs: [Release]
+    steps:
+      - name: Generate app token
+        id: app_token
+        uses: chanzuckerberg/github-app-token@365b1f2db827eb8f17288ec335b1a7e3c03ff683 # v1.1.4
+        with:
+          app_id: ${{ secrets.GH_ACTIONS_HELPER_APP_ID }}
+          private_key: ${{ secrets.GH_ACTIONS_HELPER_PK }}
+      - name: Dispatch record-changelog (best-effort)
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
+          TAG: ${{ github.event.release.tag_name }}
+          NEW_SHA: ${{ github.sha }}
+        run: |
+          set -uo pipefail
+          gh workflow run record-changelog.yml \
+            --repo IT-Academic-Research-Services/cypherid-web-infra \
+            --field env_name=prod \
+            --field component=cli \
+            --field source_repo=IT-Academic-Research-Services/seqtoid-cli \
+            --field new_sha="${NEW_SHA}" \
+            --field default_piece="Command-line tool" \
+            --field reason="auto: cli release ${TAG}" \
+            || echo "changelog dispatch failed (best-effort); check seqtoid-ci-app actions:write on cypherid-web-infra"
