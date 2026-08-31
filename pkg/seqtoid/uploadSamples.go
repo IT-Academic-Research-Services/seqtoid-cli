@@ -24,13 +24,17 @@ type CreateSamplesReqSample struct {
 	ProjectID           int                         `json:"project_id"`
 	Status              string                      `json:"status"`
 	Workflows           []string                    `json:"workflows"`
-	Technology          string                      `json:"technology"`
-	WetlabProtocol      string                      `json:"wetlab_protocol"`
-	MedakaModel         *string                     `json:"medaka_model,omitempty"`
-	ClearLabs           *bool                       `json:"clearlabs,omitempty"`
-	ReferenceAccession  *string                     `json:"accession_id,omitempty"`
-	ReferenceFasta      *string                     `json:"ref_fasta,omitempty"`
-	PrimerBed           *string                     `json:"primer_bed,omitempty"`
+	// WorkflowVersions pins a per-run pipeline version, keyed by workflow name (one upload can run
+	// several workflows). Omitted when the user did not request a version, so the server resolves
+	// the default exactly as before.
+	WorkflowVersions   map[string]string `json:"workflow_versions,omitempty"`
+	Technology         string            `json:"technology"`
+	WetlabProtocol     string            `json:"wetlab_protocol"`
+	MedakaModel        *string           `json:"medaka_model,omitempty"`
+	ClearLabs          *bool             `json:"clearlabs,omitempty"`
+	ReferenceAccession *string           `json:"accession_id,omitempty"`
+	ReferenceFasta     *string           `json:"ref_fasta,omitempty"`
+	PrimerBed          *string           `json:"primer_bed,omitempty"`
 }
 
 type samplesReq struct {
@@ -80,6 +84,7 @@ func (c *Client) CreateSamples(
 	sampleFiles map[string]SampleFiles,
 	samplesMetadata SamplesMetadata,
 	workflow string,
+	workflowVersion string,
 	sampleOptions SampleOptions,
 ) ([]createSamplesResSample, error) {
 	req := samplesReq{
@@ -130,6 +135,10 @@ func (c *Client) CreateSamples(
 			ProjectID:           projectID,
 			Status:              "created",
 			Workflows:           []string{workflow},
+		}
+
+		if workflowVersion != "" {
+			sample.WorkflowVersions = map[string]string{workflow: workflowVersion}
 		}
 
 		if sampleOptions.Technology != "" {

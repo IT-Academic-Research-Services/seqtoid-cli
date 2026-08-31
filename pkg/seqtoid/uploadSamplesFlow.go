@@ -18,9 +18,16 @@ func UploadSamplesFlow(
 	projectName string,
 	metadataCSVPath string,
 	workflow string,
+	workflowVersion string,
 	sampleOptions SampleOptions,
 	disableBuffer bool,
 ) error {
+	if workflowVersion != "" {
+		if err := DefaultClient.ValidateWorkflowVersion(workflow, workflowVersion); err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	projectID, err := DefaultClient.GetProjectID(projectName)
 	if err != nil {
 		log.Fatal(err)
@@ -68,6 +75,7 @@ func UploadSamplesFlow(
 		sampleFiles,
 		samplesMetadata,
 		workflow,
+		workflowVersion,
 		sampleOptions,
 	)
 	if err != nil {

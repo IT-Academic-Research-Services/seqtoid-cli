@@ -42,6 +42,7 @@ var uploadSamplesCmd = &cobra.Command{
 			projectName,
 			metadataCSVPath,
 			"amr",
+			workflowVersion,
 			options,
 			disableBuffer,
 		)

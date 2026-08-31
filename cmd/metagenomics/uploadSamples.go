@@ -45,6 +45,7 @@ var uploadSamplesCmd = &cobra.Command{
 			projectName,
 			metadataCSVPath,
 			workflow,
+			workflowVersion,
 			seqtoid.SampleOptions{
 				Technology: Technologies[technology],
 			},

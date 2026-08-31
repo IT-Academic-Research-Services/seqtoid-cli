@@ -11,6 +11,7 @@ import (
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/consensusGenome"
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/generateMetadataTemplate"
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/metagenomics"
+	"github.com/IT-Academic-Research-Services/seqtoid-cli/cmd/workflowVersions"
 	"github.com/IT-Academic-Research-Services/seqtoid-cli/pkg/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -29,6 +30,7 @@ func init() {
 	RootCmd.AddCommand(consensusGenome.ConsensusGenomeCmd)
 	RootCmd.AddCommand(amr.AmrCmd)
 	RootCmd.AddCommand(generateMetadataTemplate.GenerateMetadataTemplateCmd)
+	RootCmd.AddCommand(workflowVersions.ManCmd)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
