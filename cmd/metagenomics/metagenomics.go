@@ -19,6 +19,7 @@ var disableBuffer bool
 var technology string
 var guppyBasecallerSetting string
 var workflow string
+var workflowVersion string
 
 var Technologies = map[string]string{
 	"Illumina": "Illumina",
@@ -69,6 +70,7 @@ func loadSharedFlags(c *cobra.Command) {
 			guppBasecallerSettingOptionsString),
 	)
 	c.Flags().BoolVar(&disableBuffer, "disable-buffer", false, "Disable shared buffer pool (useful if running out of memory)")
+	c.Flags().StringVar(&workflowVersion, "workflow-version", "", "Pipeline version to run for this upload, e.g. '8.3.1'. Optional; defaults to the version configured for the project. Run 'seqtoid man' to list available versions.")
 }
 
 func validateCommonArgs() error {

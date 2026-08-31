@@ -64,6 +64,7 @@ var uploadSamplesCmd = &cobra.Command{
 			projectName,
 			metadataCSVPath,
 			"consensus-genome",
+			workflowVersion,
 			options,
 			disableBuffer,
 		)
