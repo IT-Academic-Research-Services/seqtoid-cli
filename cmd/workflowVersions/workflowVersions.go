@@ -21,16 +21,16 @@ var workflows = []struct {
 
 // ManCmd lists the pipeline versions available for each workflow.
 //
-// Named "man" as requested; also reachable as "workflow-versions" or "versions", which describe
-// what it does more plainly.
+// Canonical name is "workflow-versions"; also reachable as "man" or "versions".
 var ManCmd = &cobra.Command{
-	Use:     "man",
-	Aliases: []string{"workflow-versions", "versions"},
+	Use:     "workflow-versions",
+	Aliases: []string{"man", "versions"},
 	Short:   "List the available pipeline versions for each workflow",
 	Long: "List the pipeline versions you can select at upload with --workflow-version, grouped by " +
 		"workflow. The newest version is marked (latest); deprecated versions still run but are no " +
 		"longer patched. If a workflow shows no versions, per-run selection is not available in this " +
-		"environment and uploads use the version configured for the project.",
+		"environment and uploads use the version configured for the project.\n\n" +
+		"Aliases: 'man', 'versions'.",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		out := cmd.OutOrStdout()
 		for _, wf := range workflows {

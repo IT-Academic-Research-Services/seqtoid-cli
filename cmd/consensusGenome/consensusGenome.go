@@ -142,7 +142,7 @@ func loadSharedFlags(c *cobra.Command) {
 	c.Flags().StringVar(&referenceFasta, "reference-fasta", "", "Local reference fasta file, used for general consensus genomes (not SARS-CoV2), requires sequencing-platform 'Illumina'")
 	c.Flags().StringVar(&primerBed, "primer-bed", "", "Local primer file (.bed), used for general consensus genomes (not SARS-CoV2), requires reference-fasta or reference-accession and sequencing-platform 'Illumina'")
 	c.Flags().BoolVar(&disableBuffer, "disable-buffer", false, "Disable shared buffer pool (useful if running out of memory)")
-	c.Flags().StringVar(&workflowVersion, "workflow-version", "", "Pipeline version to run for this upload, e.g. '3.5.0'. Optional; defaults to the version configured for the project. Run 'seqtoid man' to list available versions.")
+	c.Flags().StringVar(&workflowVersion, "workflow-version", "", "Pipeline version to run for this upload, e.g. '3.5.0'. Optional; defaults to the version configured for the project. Run 'seqtoid workflow-versions' to list available versions.")
 }
 
 func validateCommonArgs() error {
