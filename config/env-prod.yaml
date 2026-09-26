@@ -1,0 +1,20 @@
+# seqtoid-cli - ENV-PROD environment profile (env-prod.seqtoid.org)
+#
+# Usage:
+#   seqtoid --config /path/to/config/env-prod.yaml <command>
+# or copy to the default config location (see config/README.md), or set the
+# equivalent SEQTOID_CLI_* env vars.
+#
+# These are public OAuth client config (native app / device flow - NO client secret).
+# env-prod is a restricted pre-release environment: requests only succeed from
+# allowlisted networks.
+
+seqtoid_base_url: https://env-prod.seqtoid.org
+
+# Auth0 (SeqtoID prod tenant, custom domain)
+auth0_host: auth.seqtoid.org
+# CLI native-app client id - must equal the server's AUTH0_CLI_AUDIENCE (verify_cli checks the id_token aud).
+auth0_client_id: Z0WFZH3mcqLqj29xYo7fpC1xZSGJNwQ0
+# Device-flow requested audience: the tenant's REAL Management API (the custom domain
+# auth.seqtoid.org cannot mint tokens for its own /api/v2/), per pkg/auth0/auth0.go.
+auth0_audience: https://seqtoid-prod.us.auth0.com/api/v2/
