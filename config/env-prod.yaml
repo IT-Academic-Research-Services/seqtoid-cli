@@ -1,4 +1,4 @@
-# seqtoid-cli - ENV-PROD environment profile (env-prod.seqtoid.org)
+# seqtoid-cli - SeqtoID production profile (seqtoid.org)
 #
 # Usage:
 #   seqtoid --config /path/to/config/env-prod.yaml <command>
@@ -6,10 +6,10 @@
 # equivalent SEQTOID_CLI_* env vars.
 #
 # These are public OAuth client config (native app / device flow - NO client secret).
-# env-prod is a restricted pre-release environment: requests only succeed from
-# allowlisted networks.
+# Production moved to the apex seqtoid.org on 2026-10-01. env-prod.seqtoid.org still answers, so
+# older releases that default to it keep working, but new configs should use the apex.
 
-seqtoid_base_url: https://env-prod.seqtoid.org
+seqtoid_base_url: https://seqtoid.org
 
 # Auth0 (SeqtoID prod tenant, custom domain)
 auth0_host: auth.seqtoid.org

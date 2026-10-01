@@ -7,7 +7,7 @@ the binary's ldflag-baked defaults at runtime (viper), so **one package works ag
 |---|---|---|
 | **dev** (`dev.yaml`) | `https://dev.seqtoid.org` | `auth.dev.seqtoid.org` |
 | **env-staging** (`env-staging.yaml`) | `https://env-staging.seqtoid.org` | `auth.dev.seqtoid.org` (shared w/ dev during alpha) |
-| **env-prod** (`env-prod.yaml`) | `https://env-prod.seqtoid.org` | `auth.seqtoid.org` (prod tenant; allowlisted networks only) |
+| **env-prod** (`env-prod.yaml`) | `https://seqtoid.org` (production; `env-prod.seqtoid.org` still answers for older releases) | `auth.seqtoid.org` (prod tenant) |
 
 All values are public OAuth client config (native app / device flow — **no client secret**).
 
