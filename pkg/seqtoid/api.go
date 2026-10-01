@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/viper"
 
@@ -53,9 +54,27 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
 
-	res, err := c.httpClient.Do(req)
-	if err != nil {
-		return res, err
+	var res *http.Response
+	for attempt := 1; ; attempt++ {
+		res, err = c.httpClient.Do(req)
+		if err != nil {
+			return res, err
+		}
+		if !isThrottled(res.StatusCode) || attempt > maxThrottleRetries {
+			break
+		}
+		wait := retryDelay(res, attempt, time.Now())
+		res.Body.Close()
+		fmt.Fprintf(os.Stderr, "SeqToID is busy (HTTP %d), retrying in %s (retry %d of %d)\n", res.StatusCode, wait, attempt, maxThrottleRetries)
+		sleep(wait)
+		// The previous attempt consumed the request body; rewind it for the retry.
+		if req.GetBody != nil {
+			body, err := req.GetBody()
+			if err != nil {
+				return nil, err
+			}
+			req.Body = body
+		}
 	}
 
 	// TODO: don't exit, return an error type
