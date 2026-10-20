@@ -75,6 +75,7 @@ var uploadSampleCmd = &cobra.Command{
 			workflowVersion,
 			options,
 			disableBuffer,
+			resume,
 		)
 	},
 }

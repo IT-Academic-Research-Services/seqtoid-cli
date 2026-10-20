@@ -57,6 +57,7 @@ var uploadSampleCmd = &cobra.Command{
 				Technology: Technologies[technology],
 			},
 			disableBuffer,
+			resume,
 		)
 	},
 }

@@ -62,6 +62,8 @@ type UploadInfo struct {
 	// the stored object name in S3Path (to keep PII out of S3 keys), so S3Path's basename can no
 	// longer be matched to a local file; Source carries the name to correlate on.
 	Source string `json:"source"`
+	// Uploaded is set only by ResumeUploadTargets: the file is already on S3 and is skipped.
+	Uploaded bool `json:"uploaded"`
 }
 
 // Must match file type constants present in SeqToID's InputFile model
