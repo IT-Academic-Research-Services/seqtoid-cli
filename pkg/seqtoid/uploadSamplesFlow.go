@@ -58,6 +58,19 @@ func UploadSamplesFlow(
 		}
 	}
 
+	// Weekly upload limit: say what is left and stop BEFORE metadata checks and sample creation if this
+	// upload would go over it, instead of failing after the user has fixed everything else. Skipped when
+	// the server cannot report an allowance (older server, network error); the server still enforces it.
+	if allowance, err := DefaultClient.GetUploadAllowance(); err == nil {
+		message, ok := CheckUploadAllowance(allowance, len(samplesMetadata))
+		if message != "" {
+			fmt.Println(message)
+		}
+		if !ok {
+			os.Exit(1)
+		}
+	}
+
 	err = GeoSearchSuggestions(&samplesMetadata)
 	if err != nil {
 		log.Fatal(err)

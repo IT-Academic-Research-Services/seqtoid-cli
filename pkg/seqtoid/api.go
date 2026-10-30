@@ -35,10 +35,11 @@ var DefaultClient = &Client{
 	httpClient: http.DefaultClient,
 }
 
-func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
+// authorize points req at the configured SeqToID host and adds the user's bearer token.
+func (c *Client) authorize(req *http.Request) error {
 	token, err := c.auth0.IDToken()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	baseURLString := defaultBaseURL
@@ -47,14 +48,22 @@ func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
 	}
 	baseURL, err := url.Parse(baseURLString)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	req.URL.Scheme = baseURL.Scheme
 	req.URL.Host = baseURL.Host
 
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token))
+	return nil
+}
+
+func (c *Client) authorizedRequest(req *http.Request) (*http.Response, error) {
+	if err := c.authorize(req); err != nil {
+		return nil, err
+	}
 
 	var res *http.Response
+	var err error
 	for attempt := 1; ; attempt++ {
 		res, err = c.httpClient.Do(req)
 		if err != nil {
