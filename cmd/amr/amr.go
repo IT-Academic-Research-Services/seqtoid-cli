@@ -16,6 +16,7 @@ var rawMetadata []string
 var stringMetadata map[string]string
 var metadataCSVPath string
 var disableBuffer bool
+var resume bool
 var workflowVersion string
 
 // AmrCmd represents the Amr command
@@ -36,6 +37,7 @@ func loadSharedFlags(c *cobra.Command) {
 	c.Flags().StringArrayVarP(&rawMetadata, "metadatum", "m", nil, "Metadatum name and value for your sample, ex. 'host=Human'. Repeat -m for multiple; values may contain commas (e.g. a location).")
 	c.Flags().StringVar(&metadataCSVPath, "metadata-csv", "", "Metadata local file path.")
 	c.Flags().BoolVar(&disableBuffer, "disable-buffer", false, "Disable shared buffer pool (useful if running out of memory)")
+	c.Flags().BoolVar(&resume, "resume", false, "Finish uploading samples an earlier run created but never completed (e.g. the computer slept or lost its connection). Run the same command again with --resume; files already uploaded are skipped and no new samples are created.")
 	c.Flags().StringVar(&workflowVersion, "workflow-version", "", "Pipeline version to run for this upload, e.g. '1.4.0'. Optional; defaults to the version configured for the project. Run 'seqtoid workflow-versions' to list available versions.")
 }
 

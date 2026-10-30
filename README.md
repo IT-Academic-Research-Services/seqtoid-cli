@@ -278,6 +278,27 @@ seqtoid amr upload-samples `
   your_directory_of_samples
 ```
 
+### If an upload is interrupted
+
+A large batch can take many hours. If the computer sleeps, loses its connection, or the command is
+stopped, the samples that had not finished are left waiting on SeqToID. A sample that fails no longer
+stops the rest of the batch; the command lists any samples that did not finish at the end.
+
+To finish them, run **the same command again with `--resume`**. It re-attaches to the samples the
+earlier run created (no new or duplicate samples), skips files that are already uploaded, and continues
+a partly uploaded file where it stopped:
+
+```bash
+seqtoid metagenomics upload-samples \
+  -p 'Project Name' \
+  --metadata-csv your_metadata.csv \
+  --resume \
+  your_directory_of_samples
+```
+
+Samples that already finished are reported as `already uploaded` and left alone. For long uploads on
+macOS, `caffeinate -i seqtoid ...` keeps the computer from sleeping.
+
 ## Configuration
 
 seqtoid-cli can be configured with environment variables or files. By default configurations are saved in your system's default configuration directory under a directory called `seqtoid-cli` in a yml file called `config.yml`. You can specify a custom configuration file with the `--config` flag for any command. Some commands modify your configuration like `accept-user-agreement`. These will modify whatever configuration file you specify, or the default if none are specified. Every configuration can be set as an environment variable with the prefix `SEQTOID_CLI_`. For example, the `secret` config can be set with the environment variable: `SEQTOID_CLI_SECRET`.
